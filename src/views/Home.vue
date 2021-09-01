@@ -66,7 +66,7 @@
     <v-dialog max-width="600" v-model="dialogLogin">
       <v-card>
         <v-card-title class="text-h5 green">
-          Realizar Cadastro
+          Realizar Login
         </v-card-title>
         <v-form class="pa-8">
           <v-text-field label="Usuário" v-model="usuario"/>
@@ -103,7 +103,9 @@ export default {
       this.dialogCadastro = false;
     },
     signin(){
-      this.dialogCadastro = false;
+      axios.post("http://localhost:8081/user/login", {username: this.usuario, password: this.senha})
+          .then(value => console.log(value));
+      this.dialogLogin = false;
     }
   }
 }
