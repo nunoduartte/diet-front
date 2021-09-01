@@ -82,6 +82,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "HomePage",
   data:() => {
@@ -98,6 +99,7 @@ export default {
   },
   methods: {
     signup(){
+      axios.post("http://localhost:8081/user", {username: this.usuario, email: this.email, password: this.senha});
       this.dialogCadastro = false;
     },
     signin(){
