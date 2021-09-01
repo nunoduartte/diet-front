@@ -35,9 +35,17 @@
     </v-toolbar>
     <div class="mt-3">
       <v-row justify="center">
-        <v-img src="@/assets/diet.jpg" max-height="700" max-width="1000"/>
+        <v-img src="@/assets/diet.jpg" max-height="1000" width="1080"/>
       </v-row>
-      <v-card-text>Nunca desista dos seus sonhos</v-card-text>
+      <v-card flat style="position: absolute; top:45vh; left: 55vw; background-color: transparent">
+        <v-col>
+          <h1 style="color:black; font-family: cursive;">Não é uma dieta. Não é uma fase.<br/> É uma mudança permanente no estilo de vida</h1>
+          <v-row class="mt-4" justify="center">
+            <v-btn class="mr-4 white--text" color="green" style="width: 180px">Cadastro</v-btn>
+            <v-btn color="white" class="green--text" style="width: 180px">Login</v-btn>
+          </v-row>
+        </v-col>
+      </v-card>
     </div>
   </v-card>
 </template>
@@ -48,7 +56,7 @@ export default {
   data:() => {
       return {
         tab:0,
-        headerItens:['criar dieta', 'ver receitas', 'ver consumo', 'ver calorias'],
+        headerItens:['Home', 'criar dieta', 'ver receitas', 'ver consumo', 'ver calorias'],
         menuItens: ['Fazer Login', 'Fazer Cadastro']
       }
   }

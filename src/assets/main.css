@@ -1,0 +1,31 @@
+@font-face {
+    font-family: 'KaiseiHarunoUmi';
+    font-style: normal;
+    font-weight: 400;
+    font-display: auto;
+    src: local('KaiseiHarunoUmi-400'), url(~@/assets/fonts/KaiseiHarunoUmi-Regular.ttf) format('ttf');
+}
+
+@font-face {
+    font-family: 'KaiseiHarunoUmi';
+    font-style: auto;
+    font-weight: 500;
+    font-display: auto;
+    src: local('KaiseiHarunoUmi-Medium-400'), url(~@/assets/fonts/KaiseiHarunoUmi-Medium.ttf) format('ttf');
+}
+
+@font-face {
+    font-family: 'KaiseiHarunoUmi';
+    font-style: auto;
+    font-weight: 700;
+    font-display: auto;
+    src: local('KaiseiHarunoUmi-Bold-400'), url(~@/assets/fonts/KaiseiHarunoUmi-Bold.ttf) format('ttf');
+}
+
+@font-face {
+    font-family: 'Roboto Mono';
+    font-style: auto;
+    font-weight: 700;
+    font-display: auto;
+    src: local('KaiseiHarunoUmi-Bold-400'), url(~@/assets/fonts/KaiseiHarunoUmi-Bold.ttf) format('ttf');
+}
