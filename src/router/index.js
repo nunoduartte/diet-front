@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import SignIn from "@/views/SignIn";
 import SignUp from "@/views/SignUp";
 import HomePage from "@/views/Home";
+import Profile from "@/views/Profile";
 
 Vue.use(VueRouter)
 
@@ -26,9 +27,9 @@ const routes = [
     component: SignUp
   },
   {
-    path: '/perfil',
-    name: 'Seus Dados',
-    component: SignIn
+    path: '/profile',
+    name: 'Profile',
+    component: Profile
   }
 ]
 

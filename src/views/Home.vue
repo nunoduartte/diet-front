@@ -95,7 +95,7 @@ export default {
         tab:0,
         dialogCadastro:false,
         dialogLogin:false,
-        headerItens:['Home', 'criar dieta', 'ver receitas', 'ver consumo', 'ver calorias'],
+        headerItens:['Home'],
         menuItens: ['Fazer Login', 'Fazer Cadastro']
       }
   },
@@ -103,12 +103,13 @@ export default {
     signup(){
       axios.post("http://localhost:8081/user", {username: this.usuario, email: this.email, password: this.senha});
       this.dialogCadastro = false;
-      router.push()
+      router.push("/profile");
     },
     signin(){
       axios.post("http://localhost:8081/user/login", {username: this.usuario, password: this.senha})
           .then(value => console.log(value));
       this.dialogLogin = false;
+      router.push("/profile");
     }
   }
 }
