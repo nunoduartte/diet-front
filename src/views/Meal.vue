@@ -37,7 +37,9 @@
           </tbody>
         </template>
       </v-simple-table>
-      <v-btn>Adicionar Alimento</v-btn>
+      <v-btn @click="dialogNewFood=true">
+        Adicionar Alimento
+      </v-btn>
     </v-col>
     <v-dialog max-width="600" v-model="dialogNewFood">
       <v-card>
@@ -45,12 +47,14 @@
           Alimento
         </v-card-title>
         <v-form class="pa-8">
-          <v-text-field label="Nome" v-model="email"/>
-          <v-text-field label="Usuário" v-model="usuario"/>
-          <v-text-field label="Senha" v-model="senha"/>
+          <v-text-field label="Nome" v-model="food.name"/>
+          <v-text-field type="number" label="Carboidratos" v-model="food.carbohydrate"/>
+          <v-text-field type="number" label="Proteínas" v-model="food.protein"/>
+          <v-text-field type="number" label="Gorduras" v-model="food.fat"/>
+          <v-text-field type="number" label="Calorias" v-model="food.calories"/>
           <v-row justify="center" class="mt-6">
-            <v-btn class="mr-4 white--text" color="red" style="width: 180px" @click="dialogCadastro=false">Cancelar</v-btn>
-            <v-btn class="white--text" color="green" style="width: 180px" @click="signup">Cadastrar</v-btn>
+            <v-btn class="mr-4 white--text" color="red" style="width: 180px" @click="dialogNewFood=false">Cancelar</v-btn>
+            <v-btn class="white--text" color="green" style="width: 180px" @click="addFood">Adicionar</v-btn>
           </v-row>
         </v-form>
       </v-card>
@@ -59,11 +63,26 @@
 </template>
 
 <script>
+import DietService from "../services/DietService";
+
 export default {
   name: "Meal",
-  food: {},
-  dialogNewFood: false,
-  props: ["meal"]
+  props: ["meal"],
+  methods: {
+    addFood(){
+      this.food.meal_id = this.meal.id
+      DietService.createFood(this.food).then(()=>{
+        this.meal.foods.push(this.food)
+        this.dialogNewFood = false
+      })
+    }
+  },
+  data: () => {
+    return {
+      food: {},
+      dialogNewFood: false,
+    }
+  }
 }
 </script>
 

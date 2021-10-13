@@ -18,7 +18,6 @@ export default {
   components: {Meal},
   computed: {...mapState(["loggedUser"])},
   created() {
-    console.log("aaa", this.loggedUser)
   },
   methods: {
   },

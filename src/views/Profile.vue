@@ -235,7 +235,6 @@ export default {
   },
 
   created(){
-    console.log("ola")
     axios.get(`http://localhost:8081/user/${this.$route.params.id}`)
         .then((user) => {
           this.userDataID = user.data.userData.id;
@@ -256,7 +255,6 @@ export default {
           this.protein = user.data.userData.diet.protein;
           this.carbohydrate = user.data.userData.diet.carbohydrate;
           this.fat = user.data.userData.diet.fat;
-          console.log(user.data);
         });
   },
 
@@ -268,9 +266,8 @@ export default {
             measures: {id: this.measuresID, weight: this.weight, height: this.height, neck: this.neck, waist: this.waist, hip: this.hip, bodyFat: this.bodyFat},
             diet: {id: this.dietID, basalMetabolicRate: this.basalMetabolicRate, caloriesGoal: this.caloriesGoal, protein: this.protein,
               carbohydrate: this.carbohydrate, fat: this.fat}})
-          .then(userData => {
+          .then(() => {
                 this.dialogOk = true;
-                console.log(userData);
               }
           );
     },

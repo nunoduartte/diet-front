@@ -70,9 +70,8 @@ export default {
   methods: {
     ...mapActions(["login"]),
     signup(){
-      LoginService.signup(this.usuario,this.senha, this.email).then(user => {
+      LoginService.signup(this.usuario,this.senha, this.email).then(() => {
         this.dialogCadastro = false;
-        console.log(user);
       })
     },
     async signin() {
