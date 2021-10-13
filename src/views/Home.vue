@@ -22,7 +22,7 @@
         <v-form class="pa-8">
           <v-text-field label="Email" v-model="email"/>
           <v-text-field label="Usuário" v-model="usuario"/>
-          <v-text-field label="Senha" v-model="senha"/>
+          <v-text-field label="Senha" type="password" v-model="senha"/>
           <v-row justify="center" class="mt-6">
             <v-btn class="mr-4 white--text" color="red" style="width: 180px" @click="dialogCadastro=false">Cancelar</v-btn>
             <v-btn class="white--text" color="green" style="width: 180px" @click="signup">Cadastrar</v-btn>
@@ -37,7 +37,7 @@
         </v-card-title>
         <v-form class="pa-8">
           <v-text-field label="Usuário" v-model="usuario"/>
-          <v-text-field label="Senha" v-model="senha"/>
+          <v-text-field label="Senha" type="password" v-model="senha"/>
           <v-row justify="center" class="mt-6">
             <v-btn class="mr-4 white--text" color="red" style="width: 180px" @click="dialogLogin=false">Cancelar</v-btn>
             <v-btn class="white--text" color="green" style="width: 180px" @click="signin">Logar</v-btn>
@@ -49,39 +49,35 @@
 </template>
 
 <script>
-import axios from "axios";
 import router from "../router";
+import LoginService from "@/services/LoginService";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "HomePage",
+  computed: {
+    ...mapState(["loggedUser"]),
+  },
   data:() => {
       return {
         email:'',
         usuario:'',
         senha:'',
-        tab:0,
         dialogCadastro:false,
         dialogLogin:false,
-        headerItens:['Home'],
-        menuItens: ['Fazer Login', 'Fazer Cadastro']
       }
   },
   methods: {
+    ...mapActions(["login"]),
     signup(){
-      axios.post("http://localhost:8081/user", {username: this.usuario, email: this.email, password: this.senha})
-          .then(user => {
-            this.dialogCadastro = false;
-            console.log(user);
-          }
-      );
+      LoginService.signup(this.usuario,this.senha, this.email).then(() => {
+        this.dialogCadastro = false;
+      })
     },
-    signin(){
-      axios.post("http://localhost:8081/user/login", {username: this.usuario, password: this.senha})
-          .then(user => {
-                this.dialogLogin = false;
-                router.push(`/profile/${user.data.id}`);
-              }
-          );
+    async signin() {
+      await this.login({username:this.usuario,password:this.senha});
+      this.dialogLogin = false;
+      router.push(`/profile`);
     }
   }
 }

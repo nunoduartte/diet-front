@@ -10,9 +10,10 @@
 
           <v-tab
               v-for="item in headerItens"
-              :key="item"
+              :key="item.value"
+              @click="navigateToPage(item.path)"
           >
-            {{ item }}
+            <div v-if=" (item.isLoggedIn && loggedUser !== null) || (!item.isLoggedIn)">{{ item.value }}</div>
           </v-tab>
         </v-tabs>
         <v-menu offset-y>
@@ -41,11 +42,23 @@
 
 <script>
 
+import router from "@/router";
+import {mapState} from "vuex";
+
 export default {
   name: 'App',
-
+  methods:{
+    navigateToPage(page){
+      router.push(page)
+    }
+  },
+  computed: {
+    ...mapState(["loggedUser"]),
+  },
   data: () => ({
-    headerItens:['Home']
+    headerItens:[{value:'Home', path: '/', isLoggedIn: false}, {value:'Profile', path: '/profile', isLoggedIn: true},{value:'Dieta', path: '/diet', isLoggedIn: true},{value:'Follow Up', path: '/followUp', isLoggedIn: true}],
+    menuItens: ['Fazer Login', 'Fazer Cadastro'],
+    tab:0,
   }),
 };
 </script>
