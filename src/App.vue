@@ -45,7 +45,7 @@ export default {
   name: 'App',
 
   data: () => ({
-    headerItens:['Home'],
+    headerItens:['Home', 'Profile', 'Dieta'],
     menuItens: ['Fazer Login', 'Fazer Cadastro'],
     tab:0,
   }),

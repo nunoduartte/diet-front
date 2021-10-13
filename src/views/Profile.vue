@@ -213,11 +213,6 @@ export default {
         measuresID:0,
         dietID:0,
         genreValues : ['F' ,'M'],
-        genre: "",
-        biotypeLabelValues : ['ECTOMORPH' ,'MESOMORPH', 'ENDOMORPH'],
-        biotype: "",
-        goalLabelValues : ['LOSE' ,'MAINTAIN', 'GAIN'],
-        goal: "",
         weight:0,
         height:0,
         neck:0,
@@ -230,6 +225,11 @@ export default {
         carbohydrate:0,
         fat:0,
         headerItens:['Home', 'Profile'],
+        genre: "F",
+        biotypeLabelValues : ['ECTOMORFO' ,'MESOMORFO', 'ENDOMORFO'],
+        biotype: 0,
+        goalLabelValues : ['PERDER' ,'MANTER', 'GANHAR'],
+        goal: 0,
         menuItens: ['Logout']
       };
   },
