@@ -22,7 +22,7 @@
               Gordura(g)
             </th>
             <th class="text-center green--text">
-              Calorias
+              Calorias(Kcal)
             </th>
           </tr>
           </thead>
@@ -51,12 +51,20 @@
           Alimento
         </v-card-title>
         <v-form class="pa-8">
-          <v-text-field label="Nome" v-model="food.name"/>
-          <v-text-field type="number" label="Quantidade(g)" v-model="food.grams"/>
-          <v-text-field type="number" label="Carboidratos" v-model="food.carbohydrate"/>
-          <v-text-field type="number" label="Proteínas" v-model="food.protein"/>
-          <v-text-field type="number" label="Gorduras" v-model="food.fat"/>
-          <v-text-field type="number" label="Calorias" v-model="food.calories"/>
+          <v-autocomplete label="Descrição"
+                          v-model="selectedFood"
+                          :items="foods"
+                          :loading="loading"
+                          item-text="descricao"
+                          return-object
+                          :search-input.sync="search"
+                          cache-items
+                          @change="onchangeFood"/>
+          <v-text-field type="number" label="Quantidade" v-model="food.grams" suffix="g" @change="onchangeGrams" :disabled="this.selectedFood.id === undefined"/>
+          <v-text-field type="number" label="Carboidratos" v-model="food.carbohydrate" suffix="g" readonly/>
+          <v-text-field type="number" label="Proteínas" v-model="food.protein" suffix="g" readonly/>
+          <v-text-field type="number" label="Gorduras" v-model="food.fat" suffix="g" readonly/>
+          <v-text-field type="number" label="Calorias" v-model="food.calories" suffix="Kcal" readonly/>
           <v-row justify="center" class="mt-6">
             <v-btn class="mr-4 white--text" color="red" style="width: 180px" @click="dialogNewFood=false">Cancelar</v-btn>
             <v-btn class="white--text" color="green" style="width: 180px" @click="addFood">Adicionar</v-btn>
@@ -69,6 +77,7 @@
 
 <script>
 import DietService from "../services/DietService";
+import FoodQueryService from "../services/FoodQueryService";
 
 export default {
   name: "Meal",
@@ -76,18 +85,47 @@ export default {
   methods: {
     addFood(){
       this.food.meal_id = this.meal.id
-      DietService.createFood(this.food).then(()=>{
-        this.meal.foods.push(this.food)
+      DietService.createFood(this.food).then((res)=>{
+        this.meal.foods.push(res.data)
         this.dialogNewFood = false
       })
+    },
+    onchangeFood(){
+      this.food.grams = 100
+      this.food.name = this.selectedFood.descricao
+      this.food.carbohydrate = this.selectedFood.carboidratos
+      this.food.protein = this.selectedFood.proteina
+      this.food.fat = this.selectedFood.lipidios
+      this.food.calories = this.selectedFood.energia
+    },
+    onchangeGrams(){
+      this.food.calories = this.selectedFood.energia * this.food.grams * 0.01
     }
+  },
+  watch: {
+    search (value) {
+      if(value.length > 2) {
+        this.loading=true;
+        FoodQueryService.query(value).then((res) => {
+          this.foods = res.data;
+          this.loading=false;
+        })
+      } else {
+        this.foods=[];
+      }
+    },
   },
   data: () => {
     return {
-      food: {},
+      food:{calories:0},
+      selectedFood: {},
+      loading:false,
+      search:null,
+      foods:[],
       dialogNewFood: false,
     }
   }
+
 }
 </script>
 
