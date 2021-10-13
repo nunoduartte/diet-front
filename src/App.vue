@@ -13,7 +13,7 @@
               :key="item.value"
               @click="navigateToPage(item.path)"
           >
-            {{ item.value }}
+            <div v-if=" (item.isLoggedIn && loggedUser !== null) || (!item.isLoggedIn)">{{ item.value }}</div>
           </v-tab>
         </v-tabs>
         <v-menu offset-y>
@@ -43,6 +43,7 @@
 <script>
 
 import router from "@/router";
+import {mapState} from "vuex";
 
 export default {
   name: 'App',
@@ -51,8 +52,11 @@ export default {
       router.push(page)
     }
   },
+  computed: {
+    ...mapState(["loggedUser"]),
+  },
   data: () => ({
-    headerItens:[{value:'Home', path: '/'}, {value:'Profile', path: '/profile'}],
+    headerItens:[{value:'Home', path: '/', isLoggedIn: false}, {value:'Profile', path: '/profile', isLoggedIn: true}],
     menuItens: ['Fazer Login', 'Fazer Cadastro'],
     tab:0,
   }),
