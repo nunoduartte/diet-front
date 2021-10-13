@@ -1,27 +1,27 @@
 <template>
   <div>
     <v-col class="mt-1" align="center">
-      <p>{{meal.name}}</p>
+      <p class="green--text">{{meal.name}}</p>
       <v-simple-table>
         <template v-slot:default>
           <thead>
           <tr>
-            <th class="text-left">
+            <th class="text-left green--text">
               Alimento
             </th>
-            <th class="text-left">
+            <th class="text-center green--text">
               Quantidade(g)
             </th>
-            <th class="text-left">
-              Carboidratos
+            <th class="text-center green--text">
+              Carboidratos(g)
             </th>
-            <th class="text-left">
-              Proteínas
+            <th class="text-center green--text">
+              Proteínas(g)
             </th>
-            <th class="text-left">
-              Gordura
+            <th class="text-center green--text">
+              Gordura(g)
             </th>
-            <th class="text-left">
+            <th class="text-center green--text">
               Calorias
             </th>
           </tr>
@@ -32,16 +32,16 @@
               :key="food.name"
           >
             <td>{{ food.name }}</td>
-            <td>{{ food.grams }}</td>
-            <td>{{ food.carbohydrate }}</td>
-            <td>{{ food.protein }}</td>
-            <td>{{ food.fat }}</td>
-            <td>{{ food.calories }}</td>
+            <td class="text-center">{{ food.grams }}</td>
+            <td class="text-center">{{ food.carbohydrate }}</td>
+            <td class="text-center">{{ food.protein }}</td>
+            <td class="text-center">{{ food.fat }}</td>
+            <td class="text-center">{{ food.calories }}</td>
           </tr>
           </tbody>
         </template>
       </v-simple-table>
-      <v-btn @click="dialogNewFood=true">
+      <v-btn @click="dialogNewFood=true" color="success">
         Adicionar Alimento
       </v-btn>
     </v-col>
