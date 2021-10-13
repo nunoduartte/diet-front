@@ -5,12 +5,12 @@
         <v-autocomplete label="Descrição" v-model="foodDescription" :items="foods" :loading="loading" :search-input.sync="search" cache-items>
           <template v-slot:selection="data">
             <v-sheet class="mx-1 my-1 pa-1" color="secondary" rounded>
-              <span class="mx-2 d-flex">{{ data.description}}</span>
+              <span class="mx-2 d-flex">{{ data.descricao}}</span>
             </v-sheet>
           </template>
           <template v-slot:item="data">
             <v-sheet class="mx-1 my-1 pa-1" color="secondary" rounded>
-              <span class="mx-2 d-flex">{{ data.description}}</span>
+              <span class="mx-2 d-flex">{{ data.descricao}}</span>
             </v-sheet>
           </template>
         </v-autocomplete>
