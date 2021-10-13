@@ -1,6 +1,7 @@
 <template>
   <v-col align="center">
     <v-col cols="8">
+      <v-card-title>Métricas registradas hoje:</v-card-title>
       <v-card>
         <v-data-table :headers="headers" :items="foodRegistries" disable-pagination :hide-default-footer="true">
           <template v-slot:[`item.actions`]="{ item }">
