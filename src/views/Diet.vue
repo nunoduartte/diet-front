@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <v-col class="mt-1" align="center">
-      <h1 style="color:black; font-family: cursive;">Refeições</h1>
+  <v-col align="center">
+    <v-col cols="8">
+      <h1 style="color:gray; font-family: cursive;">Minhas Refeições</h1>
       <div :key="meal.id" v-for="meal in this.loggedUser.userData.diet.meals">
         <Meal :meal="meal" />
       </div>
     </v-col>
-  </div>
+  </v-col>
 </template>
 
 <script>
