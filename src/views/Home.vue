@@ -22,7 +22,7 @@
         <v-form class="pa-8">
           <v-text-field label="Email" v-model="email"/>
           <v-text-field label="Usuário" v-model="usuario"/>
-          <v-text-field label="Senha" v-model="senha"/>
+          <v-text-field label="Senha" type="password" v-model="senha"/>
           <v-row justify="center" class="mt-6">
             <v-btn class="mr-4 white--text" color="red" style="width: 180px" @click="dialogCadastro=false">Cancelar</v-btn>
             <v-btn class="white--text" color="green" style="width: 180px" @click="signup">Cadastrar</v-btn>
@@ -37,7 +37,7 @@
         </v-card-title>
         <v-form class="pa-8">
           <v-text-field label="Usuário" v-model="usuario"/>
-          <v-text-field label="Senha" v-model="senha"/>
+          <v-text-field label="Senha" type="password" v-model="senha"/>
           <v-row justify="center" class="mt-6">
             <v-btn class="mr-4 white--text" color="red" style="width: 180px" @click="dialogLogin=false">Cancelar</v-btn>
             <v-btn class="white--text" color="green" style="width: 180px" @click="signin">Logar</v-btn>
