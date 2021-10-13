@@ -2,45 +2,14 @@
   <div>
     <v-col class="mt-1" align="center">
       <p class="green--text">{{meal.name}}</p>
-      <v-simple-table>
-        <template v-slot:default>
-          <thead>
-          <tr>
-            <th class="text-left green--text">
-              Alimento
-            </th>
-            <th class="text-center green--text">
-              Quantidade(g)
-            </th>
-            <th class="text-center green--text">
-              Carboidratos(g)
-            </th>
-            <th class="text-center green--text">
-              Proteínas(g)
-            </th>
-            <th class="text-center green--text">
-              Gordura(g)
-            </th>
-            <th class="text-center green--text">
-              Calorias(Kcal)
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr
-              v-for="food in meal.foods"
-              :key="food.name"
-          >
-            <td>{{ food.name }}</td>
-            <td class="text-center">{{ food.grams }}</td>
-            <td class="text-center">{{ food.carbohydrate }}</td>
-            <td class="text-center">{{ food.protein }}</td>
-            <td class="text-center">{{ food.fat }}</td>
-            <td class="text-center">{{ food.calories }}</td>
-          </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
+      <v-data-table
+          :headers="headers"
+          :items="meal.foods"
+          :items-per-page="10"
+          class="elevation-1"
+          @click:row="editFood"
+      ></v-data-table>
+      <br/>
       <v-btn @click="dialogNewFood=true" color="success">
         Adicionar Alimento
       </v-btn>
@@ -72,6 +41,25 @@
         </v-form>
       </v-card>
     </v-dialog>
+    <v-dialog max-width="600" v-model="dialogEditFood">
+      <v-card>
+        <v-card-title class="text-h5 green">
+          Alimento
+        </v-card-title>
+        <v-form class="pa-8">
+          <v-text-field label="Nome" v-model="food.name" readonly/>
+          <v-text-field type="number" label="Quantidade" v-model="food.grams" suffix="g" @change="onchangeGrams"/>
+          <v-text-field type="number" label="Carboidratos" v-model="food.carbohydrate" suffix="g" readonly/>
+          <v-text-field type="number" label="Proteínas" v-model="food.protein" suffix="g" readonly/>
+          <v-text-field type="number" label="Gorduras" v-model="food.fat" suffix="g" readonly/>
+          <v-text-field type="number" label="Calorias" v-model="food.calories" suffix="Kcal" readonly/>
+          <v-row justify="center" class="mt-6">
+            <v-btn class="mr-4 white--text" color="red" style="width: 180px" @click="dialogEditFood=false">Cancelar</v-btn>
+            <v-btn class="mr-4 white--text" color="red" style="width: 180px"  @click="deleteFood">Remover</v-btn>
+          </v-row>
+        </v-form>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -88,9 +76,24 @@ export default {
       DietService.createFood(this.food).then((res)=>{
         this.meal.foods.push(res.data)
         this.dialogNewFood = false
+        this.food = {calories:0}
+        this.selectedFood = {}
+      })
+    },
+    deleteFood(){
+      const foodId = this.food.id
+      DietService.deleteFood(foodId).then(()=>{
+        console.log(this.meal.foods)
+        console.log(foodId)
+        this.meal.foods = this.meal.foods.filter((food) =>{
+          return food.id !== foodId
+        })
+        this.dialogEditFood = false
+        this.food = {calories:0}
       })
     },
     onchangeFood(){
+      console.log(this.meal.foods)
       this.food.grams = 100
       this.food.name = this.selectedFood.descricao
       this.food.carbohydrate = this.selectedFood.carboidratos
@@ -100,6 +103,10 @@ export default {
     },
     onchangeGrams(){
       this.food.calories = this.selectedFood.energia * this.food.grams * 0.01
+    },
+    editFood(rowData){
+      this.food = {...rowData}
+      this.dialogEditFood = true
     }
   },
   watch: {
@@ -123,6 +130,15 @@ export default {
       search:null,
       foods:[],
       dialogNewFood: false,
+      dialogEditFood: false,
+      headers: [
+        { text: 'Alimento', align: 'start', class: 'green--text', sortable: false, value: 'name'},
+        { text: 'Quantidade(g)', class: 'green--text', sortable: false, value: 'grams'},
+        { text: 'Carboidratos(g)', class: 'green--text', sortable: false, value: 'carbohydrate'},
+        { text: 'Proteínas(g)', class: 'green--text', sortable: false, value: 'protein'},
+        { text: 'Gordura(g)', class: 'green--text', sortable: false, value: 'fat'},
+        { text: 'Calorias(Kcal)', class: 'green--text', sortable: false, value: 'calories'},
+      ],
     }
   }
 
