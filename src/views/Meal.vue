@@ -54,8 +54,8 @@
           <v-text-field type="number" label="Gorduras" v-model="food.fat" suffix="g" readonly/>
           <v-text-field type="number" label="Calorias" v-model="food.calories" suffix="Kcal" readonly/>
           <v-row justify="center" class="mt-6">
-            <v-btn class="mr-4 white--text" color="red" style="width: 180px" @click="dialogEditFood=false">Cancelar</v-btn>
             <v-btn class="mr-4 white--text" color="red" style="width: 180px"  @click="deleteFood">Remover</v-btn>
+            <v-btn class="white--text" color="green" style="width: 180px" @click="updateFood">Salvar</v-btn>
           </v-row>
         </v-form>
       </v-card>
@@ -83,8 +83,6 @@ export default {
     deleteFood(){
       const foodId = this.food.id
       DietService.deleteFood(foodId).then(()=>{
-        console.log(this.meal.foods)
-        console.log(foodId)
         this.meal.foods = this.meal.foods.filter((food) =>{
           return food.id !== foodId
         })
@@ -92,8 +90,27 @@ export default {
         this.food = {calories:0}
       })
     },
+    updateFood(){
+      const foodId = this.food.id
+      DietService.updateFood(this.food).then((res)=>{
+        this.meal.foods = this.meal.foods.filter((food) =>{
+          return food.id !== foodId
+        })
+        this.meal.foods.push(res.data)
+        this.dialogEditFood = false
+        this.food = {calories:0}
+        this.selectedFood = {}
+      })
+    },
+    editFood(rowData){
+      this.gramsRef = rowData.grams
+      this.caloriesRef = rowData.calories
+      this.food = {...rowData}
+      this.dialogEditFood = true
+    },
     onchangeFood(){
-      console.log(this.meal.foods)
+      this.gramsRef = 100
+      this.caloriesRef = this.selectedFood.energia
       this.food.grams = 100
       this.food.name = this.selectedFood.descricao
       this.food.carbohydrate = this.selectedFood.carboidratos
@@ -102,11 +119,7 @@ export default {
       this.food.calories = this.selectedFood.energia
     },
     onchangeGrams(){
-      this.food.calories = this.selectedFood.energia * this.food.grams * 0.01
-    },
-    editFood(rowData){
-      this.food = {...rowData}
-      this.dialogEditFood = true
+      this.food.calories = this.caloriesRef * this.food.grams / this.gramsRef
     }
   },
   watch: {
@@ -124,6 +137,8 @@ export default {
   },
   data: () => {
     return {
+      gramsRef:0,
+      caloriesRef:0,
       food:{calories:0},
       selectedFood: {},
       loading:false,
