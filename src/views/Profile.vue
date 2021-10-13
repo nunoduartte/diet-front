@@ -200,6 +200,7 @@
 <script>
 
 import axios from "axios";
+import {mapState} from "vuex";
 
 export default {
   name: "Profile",
@@ -235,29 +236,28 @@ export default {
   },
 
   created(){
-    axios.get(`http://localhost:8081/user/${this.$route.params.id}`)
-        .then((user) => {
-          this.userDataID = user.data.userData.id;
-          this.measuresID = user.data.userData.measures.id;
-          this.dietID = user.data.userData.diet.id;
-          this.age = user.data.userData.age;
-          this.genre = user.data.userData.genre;
-          this.biotype = user.data.userData.biotype;
-          this.goal = user.data.userData.goal;
-          this.weight = user.data.userData.measures.weight;
-          this.height = user.data.userData.measures.height;
-          this.neck = user.data.userData.measures.neck;
-          this.waist = user.data.userData.measures.waist;
-          this.hip = user.data.userData.measures.hip;
-          this.bodyFat = user.data.userData.measures.bodyFat;
-          this.basalMetabolicRate = user.data.userData.diet.basalMetabolicRate;
-          this.caloriesGoal = user.data.userData.diet.caloriesGoal;
-          this.protein = user.data.userData.diet.protein;
-          this.carbohydrate = user.data.userData.diet.carbohydrate;
-          this.fat = user.data.userData.diet.fat;
-        });
+    this.userDataID = this.loggedUser.userData.id;
+    this.measuresID = this.loggedUser.userData.measures.id;
+    this.dietID = this.loggedUser.userData.diet.id;
+    this.age = this.loggedUser.userData.age;
+    this.genre = this.loggedUser.userData.genre;
+    this.biotype = this.loggedUser.userData.biotype;
+    this.goal = this.loggedUser.userData.goal;
+    this.weight = this.loggedUser.userData.measures.weight;
+    this.height = this.loggedUser.userData.measures.height;
+    this.neck = this.loggedUser.userData.measures.neck;
+    this.waist = this.loggedUser.userData.measures.waist;
+    this.hip = this.loggedUser.userData.measures.hip;
+    this.bodyFat = this.loggedUser.userData.measures.bodyFat;
+    this.basalMetabolicRate = this.loggedUser.userData.diet.basalMetabolicRate;
+    this.caloriesGoal = this.loggedUser.userData.diet.caloriesGoal;
+    this.protein = this.loggedUser.userData.diet.protein;
+    this.carbohydrate = this.loggedUser.userData.diet.carbohydrate;
+    this.fat = this.loggedUser.userData.diet.fat;
   },
-
+  computed:{
+    ...mapState(["loggedUser"]),
+  },
   methods: {
     salvar(){
       axios.post("http://localhost:8081/userData",
