@@ -23,8 +23,8 @@
           <v-sheet
               color="rgba(0, 0, 0, .12)">
             <v-sparkline
-                :labels="labels"
-                :value="values"
+                :labels="carbohydrateLabels"
+                :value="carbohydrateValues"
                 color="white"
                 line-width="4"
                 padding="16"
@@ -45,8 +45,8 @@
           <v-sheet
               color="rgba(0, 0, 0, .12)">
             <v-sparkline
-                :labels="labels"
-                :value="values"
+                :labels="carbohydrateLabels"
+                :value="carbohydrateValues"
                 color="white"
                 line-width="4"
                 padding="16"
@@ -67,8 +67,8 @@
           <v-sheet
               color="rgba(0, 0, 0, .12)">
             <v-sparkline
-                :labels="labels"
-                :value="values"
+                :labels="carbohydrateLabels"
+                :value="carbohydrateValues"
                 color="white"
                 line-width="4"
                 padding="16"
@@ -93,8 +93,12 @@ export default {
   data(){
     return {
       foodRegistries:[],
-      labels:[],
-      values:[],
+      carbohydrateLabels:[],
+      carbohydrateValues:[],
+      proteinLabels:[],
+      proteinValues:[],
+      fatLabels:[],
+      fatValues:[],
       selectedFood: null,
       amount: 100,
       loading:false,
@@ -130,14 +134,22 @@ export default {
   },
   watch: {
     foodRegistries(foods){
-      this.labels = [];
-      this.values = [];
+      this.carbohydrateLabels = [];
+      this.carbohydrateValues = [];
+      this.proteinLabels = [];
+      this.proteinValues = [];
+      this.fatLabels = [];
+      this.fatValues = [];
       foods.forEach((food)=>{
-        this.labels.push(new Date(food.registryDate).getHours() + "h");
+        this.carbohydrateLabels.push(new Date(food.registryDate).getHours() + "h");
+        this.proteinLabels.push(new Date(food.registryDate).getHours() + "h");
+        this.fatLabels.push(new Date(food.registryDate).getHours() + "h");
         this.carbohydrateConsumed += food.carbohydrate;
         this.proteinConsumed += food.protein;
         this.fatConsumed += food.fat;
-        this.values.push(this.carbohydrateConsumed);
+        this.carbohydrateValues.push(this.carbohydrateConsumed);
+        this.proteinValues.push(this.proteinConsumed);
+        this.fatValues.push(this.fatConsumed);
       })
     },
     search (value) {
