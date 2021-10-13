@@ -77,7 +77,7 @@ export default {
     async signin() {
       await this.login({username:this.usuario,password:this.senha});
       this.dialogLogin = false;
-      router.push(`/profile/${this.loggedUser.id}`);
+      router.push(`/profile`);
     }
   }
 }

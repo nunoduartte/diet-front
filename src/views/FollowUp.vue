@@ -1,17 +1,21 @@
 <template>
   <v-col align="center">
     <v-col cols="8">
-      <v-card class="pa-8">
-        <v-autocomplete label="Descrição"
-                        v-model="selectedFood"
-                        :items="foods"
-                        :loading="loading"
-                        item-text="descricao"
-                        return-object
-                        :search-input.sync="search"
-                        cache-items/>
-        <v-text-field type="number" label="Quantidade" v-model="amount" suffix="g"/>
-        <v-btn @click="addFood" color="success">Adicionar alimento</v-btn>
+      <v-card-title>Métricas registradas hoje:</v-card-title>
+      <v-card>
+        <v-data-table :headers="headers" :items="foodRegistries" disable-pagination :hide-default-footer="true">
+          <template v-slot:[`item.actions`]="{ item }">
+            <v-icon small class="mr-2" @click="modalEdicao = true; itemSelecionado = item; amount = item.amount;">mdi-pencil</v-icon>
+            <v-icon small @click="modalRemocao = true; itemSelecionado = item">mdi-delete</v-icon>
+          </template>
+        </v-data-table>
+        <v-card-actions>
+          <v-col align="end">
+            <v-btn color="success" @click="modalCriacao=true">
+              Adicionar Alimento
+            </v-btn>
+          </v-col>
+        </v-card-actions>
       </v-card>
       <v-card
           class="mx-auto text-center mt-10"
@@ -80,6 +84,54 @@
         </v-card-text>
       </v-card>
     </v-col>
+    <v-dialog max-width="600" v-model="modalCriacao">
+      <v-card class="pa-8">
+        <v-autocomplete label="Descrição"
+                        v-model="selectedFood"
+                        :items="foods"
+                        :value-comparator="(firstValue,secondValue)=> firstValue.id === secondValue.id"
+                        :loading="loading"
+                        item-text="descricao"
+                        return-object
+                        :search-input.sync="search"
+                        cache-items/>
+        <v-text-field type="number" label="Quantidade" v-model="amount" suffix="g"/>
+
+        <v-row justify="center" class="mt-6">
+          <v-btn class="mr-4 white--text" color="red" style="width: 180px" @click="modalEdicao=false">Cancelar</v-btn>
+          <v-btn @click="addFood" color="success">Salvar Alimento</v-btn>
+        </v-row>
+      </v-card>
+    </v-dialog>
+    <v-dialog max-width="600" v-model="modalEdicao">
+      <v-card class="pa-8">
+        <v-text-field disabled :value="itemSelecionado.description"/>
+        <v-text-field type="number" label="Quantidade" v-model="amount" suffix="g"/>
+
+        <v-row justify="center" class="mt-6">
+          <v-btn class="mr-4 white--text" color="red" style="width: 180px" @click="modalEdicao=false">Cancelar</v-btn>
+          <v-btn @click="editFood" color="success">Salvar Alimento</v-btn>
+        </v-row>
+      </v-card>
+    </v-dialog>
+    <v-dialog max-width="600" v-model="modalRemocao">
+      <v-card>
+        <v-card-title class="text-h5 green">
+          Remover Alimento
+        </v-card-title>
+        <v-form class="pa-8">
+          <v-col align="center">
+            <h2>
+              Deseja remover o alimento selecionado?({{this.itemSelecionado.description}})
+            </h2>
+          </v-col>
+          <v-row justify="center" class="mt-6">
+            <v-btn class="mr-4 white--text" color="red" style="width: 180px" @click="modalRemocao=false">Cancelar</v-btn>
+            <v-btn class="white--text" color="green" style="width: 180px" @click="removeFood">Remover</v-btn>
+          </v-row>
+        </v-form>
+      </v-card>
+    </v-dialog>
   </v-col>
 </template>
 
@@ -93,20 +145,32 @@ export default {
   data(){
     return {
       foodRegistries:[],
+      headers: [
+        { text: 'Descrição', value: 'description' },
+        { text: 'Carboidratos(g)', value: 'carbohydrate' },
+        { text: 'Proteínas(g)', value: 'protein' },
+        { text: 'Gordura(g)', value: 'fat' },
+        { text: "Quantidade(g)", value: "amount"},
+        { text: "Actions", value: "actions", sortable: false }
+      ],
+      itemSelecionado:{},
       carbohydrateLabels:[],
       carbohydrateValues:[],
       proteinLabels:[],
       proteinValues:[],
       fatLabels:[],
       fatValues:[],
-      selectedFood: null,
+      selectedFood: {},
       amount: 100,
       loading:false,
       search:null,
       proteinConsumed:0,
       fatConsumed:0,
       carbohydrateConsumed:0,
-      foods:[]
+      modalEdicao:false,
+      modalRemocao:false,
+      modalCriacao:false,
+      foods:[],
     }
   },
   computed: {
@@ -130,6 +194,32 @@ export default {
       }).then((res)=>{
         this.foodRegistries.push(res.data);
       })
+      this.modalCriacao = false;
+    },
+    editFood(){
+      const foodRegistry = {
+        id: this.itemSelecionado.id,
+        user:this.loggedUser,
+        description: this.itemSelecionado.description,
+        amount: this.amount,
+        code: this.itemSelecionado.code,
+        carbohydrate:(this.itemSelecionado.carbohydrate/100)*this.amount,
+        protein:(this.itemSelecionado.protein/100)*this.amount,
+        fat:(this.itemSelecionado.fat/100)*this.amount,
+      }
+      FollowUpService.updateFoodRegistry(foodRegistry).then(()=>{
+        FollowUpService.getFoodRegistry(this.loggedUser.id).then((res)=>{
+          this.foodRegistries = res.data;
+          this.modalEdicao = false;
+        })
+      })
+    },
+    removeFood(){
+      FollowUpService.removeFoodRegistry(this.itemSelecionado.id);
+      this.foodRegistries = this.foodRegistries.filter((food)=>{
+        return food.id !== this.itemSelecionado.id;
+      })
+      this.modalRemocao = false;
     }
   },
   watch: {
