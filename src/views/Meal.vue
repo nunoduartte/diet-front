@@ -10,6 +10,9 @@
               Alimento
             </th>
             <th class="text-left">
+              Quantidade(g)
+            </th>
+            <th class="text-left">
               Carboidratos
             </th>
             <th class="text-left">
@@ -29,6 +32,7 @@
               :key="food.name"
           >
             <td>{{ food.name }}</td>
+            <td>{{ food.grams }}</td>
             <td>{{ food.carbohydrate }}</td>
             <td>{{ food.protein }}</td>
             <td>{{ food.fat }}</td>
@@ -48,6 +52,7 @@
         </v-card-title>
         <v-form class="pa-8">
           <v-text-field label="Nome" v-model="food.name"/>
+          <v-text-field type="number" label="Quantidade(g)" v-model="food.grams"/>
           <v-text-field type="number" label="Carboidratos" v-model="food.carbohydrate"/>
           <v-text-field type="number" label="Proteínas" v-model="food.protein"/>
           <v-text-field type="number" label="Gorduras" v-model="food.fat"/>
