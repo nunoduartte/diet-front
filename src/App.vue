@@ -10,9 +10,10 @@
 
           <v-tab
               v-for="item in headerItens"
-              :key="item"
+              :key="item.value"
+              @click="navigateToPage(item.path)"
           >
-            {{ item }}
+            {{ item.value }}
           </v-tab>
         </v-tabs>
         <v-menu offset-y>
@@ -41,11 +42,17 @@
 
 <script>
 
+import router from "@/router";
+
 export default {
   name: 'App',
-
+  methods:{
+    navigateToPage(page){
+      router.push(page)
+    }
+  },
   data: () => ({
-    headerItens:['Home'],
+    headerItens:[{value:'Home', path: '/'}, {value:'Profile', path: '/profile'}],
     menuItens: ['Fazer Login', 'Fazer Cadastro'],
     tab:0,
   }),
