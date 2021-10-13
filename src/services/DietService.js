@@ -9,5 +9,11 @@ export default {
   },
   deleteFood(foodId){
     return Vue.axios.delete(`/diet/food/${foodId}`)
+  },
+  createMeal(meal) {
+    return Vue.axios.post("/diet/meal", meal);
+  },
+  deleteMeal(mealId){
+    return Vue.axios.delete(`/diet/meal/${mealId}`)
   }
 }

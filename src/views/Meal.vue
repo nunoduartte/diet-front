@@ -1,7 +1,12 @@
 <template>
   <div>
     <v-col class="mt-1" align="center">
-      <p class="green--text">{{meal.name}}</p>
+      <div class="d-flex">
+        <h2 class="text-left green--text">{{meal.name}}</h2>
+        <v-btn class="mx-2 " style="margin-top: -10px;" fab icon dark color="red" @click="dialogDeleteMeal=true">
+          <v-icon dark> mdi-minus </v-icon>
+        </v-btn>
+      </div>
       <v-data-table
           :headers="headers"
           :items="meal.foods"
@@ -10,10 +15,47 @@
           @click:row="editFood"
       ></v-data-table>
       <br/>
-      <v-btn @click="dialogNewFood=true" color="success">
+      <v-btn @click="dialogNewFood=true" color="success" style="width: 180px">
         Adicionar Alimento
       </v-btn>
     </v-col>
+    <v-row justify="center">
+      <v-dialog
+          v-model="dialogDeleteMeal"
+          persistent
+          max-width="600px"
+      >
+        <v-card>
+          <v-card-title>
+            <span class="gray--text text-h5">Deletar Refeição</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <p>Tem certeza de que deseja deletar a refeição?</p>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+                color="red darken-1"
+                text
+                @click="dialogDeleteMeal = false"
+            >
+              Cancelar
+            </v-btn>
+            <v-btn
+                color="green darken-1"
+                text
+                @click="deleteMeal"
+            >
+              Confirmar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
     <v-dialog max-width="600" v-model="dialogNewFood">
       <v-card>
         <v-card-title class="text-h5 green">
@@ -66,11 +108,24 @@
 <script>
 import DietService from "../services/DietService";
 import FoodQueryService from "../services/FoodQueryService";
+import {mapState} from "vuex";
 
 export default {
   name: "Meal",
   props: ["meal"],
+  computed: {...mapState(["loggedUser"])},
   methods: {
+    deleteMeal(){
+      const mealId = this.meal.id
+      DietService.deleteMeal(mealId).then(()=>{
+        this.loggedUser.userData.diet.meals = this.loggedUser.userData.diet.meals.filter(
+            (meal)=>{
+              return meal.id !== mealId
+            }
+        )
+        this.dialogDeleteMeal = false
+      })
+    },
     addFood(){
       this.food.meal_id = this.meal.id
       DietService.createFood(this.food).then((res)=>{
@@ -146,6 +201,7 @@ export default {
       foods:[],
       dialogNewFood: false,
       dialogEditFood: false,
+      dialogDeleteMeal: false,
       headers: [
         { text: 'Alimento', align: 'start', class: 'green--text', sortable: false, value: 'name'},
         { text: 'Quantidade(g)', class: 'green--text', sortable: false, value: 'grams'},
