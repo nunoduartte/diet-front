@@ -49,39 +49,36 @@
 </template>
 
 <script>
-import axios from "axios";
 import router from "../router";
+import LoginService from "@/services/LoginService";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "HomePage",
+  computed: {
+    ...mapState(["loggedUser"]),
+  },
   data:() => {
       return {
         email:'',
         usuario:'',
         senha:'',
-        tab:0,
         dialogCadastro:false,
         dialogLogin:false,
-        headerItens:['Home'],
-        menuItens: ['Fazer Login', 'Fazer Cadastro']
       }
   },
   methods: {
+    ...mapActions(["login"]),
     signup(){
-      axios.post("http://localhost:8081/user", {username: this.usuario, email: this.email, password: this.senha})
-          .then(user => {
-            this.dialogCadastro = false;
-            console.log(user);
-          }
-      );
+      LoginService.signup(this.usuario,this.senha, this.email).then(user => {
+        this.dialogCadastro = false;
+        console.log(user);
+      })
     },
-    signin(){
-      axios.post("http://localhost:8081/user/login", {username: this.usuario, password: this.senha})
-          .then(user => {
-                this.dialogLogin = false;
-                router.push(`/profile/${user.data.id}`);
-              }
-          );
+    async signin() {
+      await this.login({username:this.usuario,password:this.senha});
+      this.dialogLogin = false;
+      router.push(`/profile/${this.loggedUser.id}`);
     }
   }
 }
