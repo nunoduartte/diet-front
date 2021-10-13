@@ -1,186 +1,173 @@
 <template>
-  <div>
-    <v-col class="mt-4" align="center">
-      <v-row class="mt-4" justify="center">
-        <v-col cols="4">
-          <v-card outlined >
-            <v-form align="center" @submit.prevent="salvar">
-              <h2 style="color:black; font-family: cursive;">Perfil</h2>
-                <v-row class="mt-4" justify="center">
-                  <v-col cols="4" >
-                    <v-text-field
-                        v-model="age"
-                        :counter="3"
-                        label="Idade"
-                        type="number"
-                        outlined
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              <v-row class="mt-4" justify="center">
-                <v-radio-group v-model="genre" >
-                  <v-radio
-                      v-for="g in genreValues"
-                      :key="g"
-                      :label="`${g}`"
-                      :value="g"
-                  ></v-radio>
-                </v-radio-group>
-              </v-row>
-              <v-row class="mt-4" justify="center">
-                <v-radio-group v-model="biotype">
-                  <v-radio
-                      v-for="b in biotypeLabelValues"
-                      :key="b"
-                      :label="`${b}`"
-                      :value="b"
-                  ></v-radio>
-                </v-radio-group>
-              </v-row>
-              <v-row class="mt-4" justify="center">
-                <v-radio-group v-model="goal">
-                  <v-radio
-                      v-for="goal in goalLabelValues"
-                      :key="goal"
-                      :label="`${goal}`"
-                      :value="goal"
-                  ></v-radio>
-                </v-radio-group>
-              </v-row>
-              <h2 style="color:black; font-family: cursive;">Medidas</h2>
-              <v-row class="mt-4" justify="center">
-                <v-col cols="4" >
-                  <v-text-field
-                      v-model="weight"
-                      :counter="3"
-                      label="Peso (kg)"
-                      type="number"
-                      outlined
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row class="mt-4" justify="center">
-                <v-col cols="4" >
-                  <v-text-field
-                      v-model="height"
-                      :counter="3"
-                      label="Altura (cm)"
-                      type="number"
-                      outlined
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row class="mt-4" justify="center">
-                <v-col cols="4" >
-                  <v-text-field
-                      v-model="neck"
-                      :counter="3"
-                      label="Pescoço (cm)"
-                      type="number"
-                      outlined
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row class="mt-4" justify="center">
-                <v-col cols="4" >
-                  <v-text-field
-                      v-model="waist"
-                      :counter="3"
-                      label="Cintura (cm)"
-                      type="number"
-                      outlined
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row class="mt-4" justify="center">
-                <v-col cols="4" >
-                  <v-text-field
-                      v-model="hip"
-                      :counter="3"
-                      label="Quadril (cm)"
-                      type="number"
-                      outlined
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row class="mt-4" justify="center">
-                <v-col cols="4" >
-                  <v-text-field
-                      v-model="bodyFat"
-                      :counter="3"
-                      label="Gordura corporal (%)"
-                      type="number"
-                      outlined
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <h2 style="color:black; font-family: cursive;">Macros</h2>
-              <v-row class="mt-4" justify="center">
-                <v-col cols="4" >
-                  <v-text-field
-                      v-model="basalMetabolicRate"
-                      :counter="5"
-                      label="Taxa metabólica basal (kcal)"
-                      type="number"
-                      outlined
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row class="mt-4" justify="center">
-                <v-col cols="4" >
-                  <v-text-field
-                      v-model="caloriesGoal"
-                      :counter="5"
-                      label="Calorias diárias (kcal)"
-                      type="number"
-                      outlined
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row class="mt-4" justify="center">
-                <v-col cols="4" >
-                  <v-text-field
-                      v-model="protein"
-                      :counter="5"
-                      label="Proteína (g)"
-                      type="number"
-                      outlined
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row class="mt-4" justify="center">
-                <v-col cols="4" >
-                  <v-text-field
-                      v-model="carbohydrate"
-                      :counter="5"
-                      label="Carboidrato (g)"
-                      type="number"
-                      outlined
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row class="mt-4" justify="center">
-                <v-col cols="4" >
-                  <v-text-field
-                      v-model="fat"
-                      :counter="5"
-                      label="Gordura (g)"
-                      type="number"
-                      outlined
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-btn
-                  class="mr-4"
-                  type="submit"
-              >
-                Salvar
-              </v-btn>
-            </v-form>
+  <v-container class="grey lighten-4">
+    <v-row no-gutters>
+      <v-col order="first">
+        <v-form @submit.prevent="salvar">
+          <v-card-title>Perfil</v-card-title>
+          <v-card>
+            <v-text-field
+                v-model="age"
+                label="Idade"
+                type="number"
+                outlined
+                hide-details
+            ></v-text-field>
           </v-card>
-        </v-col>
-      </v-row>
-    </v-col>
+          <v-card>
+            <v-radio-group v-model="genre" label="Gênero">
+              <v-radio
+                  v-for="g in genreValues"
+                  :key="g"
+                  :label="`${g}`"
+                  :value="g"
+                  hide-details
+              ></v-radio>
+            </v-radio-group>
+          </v-card>
+          <v-card>
+            <v-radio-group v-model="biotype" label="Biotipo">
+              <v-radio
+                  v-for="b in biotypeValues"
+                  :key="b"
+                  :label="`${biotypeLabelValues[b]}`"
+                  :value="b"
+                  hide-details
+              ></v-radio>
+            </v-radio-group>
+          </v-card>
+          <v-card>
+            <v-radio-group v-model="goal" label="Objetivo de peso">
+              <v-radio
+                  v-for="g in goalValues"
+                  :key="g"
+                  :label="`${goalLabelValues[g]}`"
+                  :value="g"
+                  hide-details
+              ></v-radio>
+            </v-radio-group>
+          </v-card>
+        </v-form>
+      </v-col>
+      <v-col style="padding-left: 15px">
+        <v-form @submit.prevent="salvar">
+          <v-card-title>Medidas</v-card-title>
+          <v-card style="margin-bottom: 15px">
+            <v-text-field
+                v-model="weight"
+                label="Peso (kg)"
+                type="number"
+                outlined
+                hide-details
+            ></v-text-field>
+          </v-card>
+          <v-card style="margin-bottom: 15px">
+            <v-text-field
+                v-model="height"
+                label="Altura (cm)"
+                type="number"
+                outlined
+                hide-details
+            ></v-text-field>
+          </v-card>
+          <v-card style="margin-bottom: 15px">
+            <v-text-field
+                v-model="neck"
+                label="Pescoço (cm)"
+                type="number"
+                outlined
+                hide-details
+            ></v-text-field>
+          </v-card>
+          <v-card style="margin-bottom: 15px">
+            <v-text-field
+                v-model="waist"
+                label="Cintura (cm)"
+                type="number"
+                outlined
+                hide-details
+            ></v-text-field>
+          </v-card>
+          <v-card style="margin-bottom: 15px">
+            <v-text-field
+                v-model="hip"
+                label="Quadril (cm)"
+                type="number"
+                outlined
+                hide-details
+            ></v-text-field>
+          </v-card>
+          <v-card>
+            <v-text-field
+                v-model="bodyFat"
+                label="Gordura corporal (%)"
+                type="number"
+                outlined
+                hide-details
+            ></v-text-field>
+          </v-card>
+        </v-form>
+      </v-col>
+      <v-col order="last" style="padding-left: 15px">
+        <v-form @submit.prevent="salvar">
+          <v-card-title>Macros</v-card-title>
+          <v-card style="margin-bottom: 15px">
+            <v-text-field
+                v-model="basalMetabolicRate"
+                label="Taxa metabólica basal (kcal)"
+                type="number"
+                outlined
+                hide-details
+            ></v-text-field>
+          </v-card>
+          <v-card style="margin-bottom: 15px">
+            <v-text-field
+                v-model="caloriesGoal"
+                label="Calorias diárias (kcal)"
+                type="number"
+                outlined
+                hide-details
+            ></v-text-field>
+          </v-card>
+          <v-card style="margin-bottom: 15px">
+            <v-text-field
+                v-model="protein"
+                label="Proteína (g)"
+                type="number"
+                outlined
+                hide-details
+            ></v-text-field>
+          </v-card>
+          <v-card style="margin-bottom: 15px">
+            <v-text-field
+                v-model="carbohydrate"
+                label="Carboidrato (g)"
+                type="number"
+                outlined
+                hide-details
+            ></v-text-field>
+          </v-card>
+          <v-card>
+            <v-text-field
+                v-model="fat"
+                label="Gordura (g)"
+                type="number"
+                outlined
+                hide-details
+            ></v-text-field>
+          </v-card>
+        </v-form>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col align="center">
+        <v-btn
+            color="success"
+            @click="salvar"
+        >
+          Salvar dados
+        </v-btn>
+      </v-col>
+    </v-row>
     <v-dialog max-width="600" v-model="dialogOk">
       <v-card>
         <v-card-title class="text-h5 green">
@@ -189,12 +176,12 @@
         <v-form class="pa-8">
           <h2 style="color:black; font-family: cursive;">Dados salvos com sucesso!</h2>
           <v-row justify="center" class="mt-6">
-          <v-btn class="white--text" color="green" style="width: 180px" @click="fechar">Ok</v-btn>
+            <v-btn class="white--text" color="green" style="width: 180px" @click="fechar">Ok</v-btn>
           </v-row>
         </v-form>
       </v-card>
     </v-dialog>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -207,7 +194,6 @@ export default {
 
   data(){
       return {
-        tab:1,
         dialogOk:false,
         age:0,
         userDataID:0,
@@ -227,10 +213,12 @@ export default {
         fat:0,
         headerItens:['Home', 'Profile'],
         genre: "F",
-        biotypeLabelValues : ['ECTOMORFO' ,'MESOMORFO', 'ENDOMORFO'],
         biotype: 0,
-        goalLabelValues : ['PERDER' ,'MANTER', 'GANHAR'],
-        goal: 0,
+        biotypeValues : ['ECTOMORPH' ,'MESOMORPH', 'ENDOMORPH'],
+        biotypeLabelValues : {'ECTOMORPH':'Ectomorfo', 'MESOMORPH':'Mesomorfo', 'ENDOMORPH':'Endomorfo'},
+        goal: "",
+        goalValues : ['LOSE', 'MAINTAIN', 'GAIN'],
+        goalLabelValues : {'LOSE' : 'Perder', 'MAINTAIN': 'Manter', 'GAIN': 'Ganhar'},
         menuItens: ['Logout']
       };
   },
