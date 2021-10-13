@@ -101,15 +101,20 @@ export default {
   },
   methods: {
     signup(){
-      axios.post("http://localhost:8081/user", {username: this.usuario, email: this.email, password: this.senha});
-      this.dialogCadastro = false;
-      router.push("/profile");
+      axios.post("http://localhost:8081/user", {username: this.usuario, email: this.email, password: this.senha})
+          .then(user => {
+            this.dialogCadastro = false;
+            console.log(user);
+          }
+      );
     },
     signin(){
       axios.post("http://localhost:8081/user/login", {username: this.usuario, password: this.senha})
-          .then(value => console.log(value));
-      this.dialogLogin = false;
-      router.push("/profile");
+          .then(user => {
+                this.dialogLogin = false;
+                router.push(`/profile/${user.data.id}`);
+              }
+          );
     }
   }
 }
