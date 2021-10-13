@@ -56,7 +56,10 @@ export default {
     ...mapState(["loggedUser"]),
   },
   data: () => ({
-    headerItens:[{value:'Home', path: '/', isLoggedIn: false}, {value:'Profile', path: '/profile', isLoggedIn: true}],
+
+    headerItens:[{value:'Home', path: '/', isLoggedIn: false},
+                 {value:'Perfil', path: '/profile', isLoggedIn: true},
+                 {value:'Dieta', path: '/diet', isLoggedIn: true}],
     menuItens: ['Fazer Login', 'Fazer Cadastro'],
     tab:0,
   }),

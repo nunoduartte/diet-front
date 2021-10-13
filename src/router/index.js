@@ -4,6 +4,7 @@ import SignIn from "@/views/SignIn";
 import SignUp from "@/views/SignUp";
 import HomePage from "@/views/Home";
 import Profile from "@/views/Profile";
+import Diet from "../views/Diet";
 
 Vue.use(VueRouter)
 
@@ -30,6 +31,11 @@ const routes = [
     path: '/profile/:id',
     name: 'Profile',
     component: Profile
+  },
+  {
+    path: '/diet',
+    name: 'Diet',
+    component: Diet
   }
 ]
 
